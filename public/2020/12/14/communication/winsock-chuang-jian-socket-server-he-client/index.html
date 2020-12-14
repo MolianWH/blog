@@ -1,0 +1,2033 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="通信,socket,Winsock,C++">
+    <meta name="description" content="JUST FOR FUN">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Winsock创建socket server和client | 马捷径</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="马捷径" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">马捷径</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-list" style="zoom: 0.6;"></i>
+      
+      <span>Medias</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a href="/musics">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Musics</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/movies">
+          
+          <i class="fas fa-film" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Movies</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/books">
+          
+          <i class="fas fa-book" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Books</span>
+        </a>
+      </li>
+      
+      <li>
+        <a href="/galleries">
+          
+          <i class="fas fa-image" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Galleries</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">马捷径</div>
+        <div class="logo-desc">
+            
+            JUST FOR FUN
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-list"></i>
+			
+			Medias
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a href="/musics " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Musics</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/movies " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-film" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Movies</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/books " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-book" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Books</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a href="/galleries " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-image" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Galleries</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/MolianWH" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/MolianWH" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=105906878,390165426&fm=26&gp=0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Winsock创建socket server和client</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/socket/">
+                                <span class="chip bg-color">socket</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Communication/" class="post-category">
+                                Communication
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-12-14
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-12-14
+                </div>
+                
+
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>本文详细介绍在Windows 10下利用Winsock创建socket server和client应用步骤和源码。项目源码可以到我的<a target="_blank" rel="noopener" href="https://github.com/MolianWH/CommutionTools/tree/main/Socket/SocketWin">github</a>上下载。在该仓库中，我准备将所有有关通信方式的源码做成工具包，便于以后开发直接使用。本文还可以在我的<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_38369492/article/details/111032276">CSND</a>上查看。</p>
+<hr>
+<h2 id="1-基本流程"><a href="#1-基本流程" class="headerlink" title="1. 基本流程"></a>1. 基本流程</h2><p>创建TCP/IP流的server/client通用步骤如下：</p>
+<h3 id="1-1-Server和Client创建流程"><a href="#1-1-Server和Client创建流程" class="headerlink" title="1.1 Server和Client创建流程"></a>1.1 Server和Client创建流程</h3><p><strong>Server</strong></p>
+<ol>
+<li>初始化Winsock</li>
+<li>创建socket</li>
+<li>绑定socket</li>
+<li>监听客户端socket</li>
+<li>接受客户端连接请求</li>
+<li>接收和发送数据</li>
+<li> 断开连接</li>
+</ol>
+<p><strong>Client</strong></p>
+<ol>
+<li>初始化Winsock</li>
+<li>创建socket</li>
+<li>连接服务端</li>
+<li>发送和接收数据</li>
+<li>断开连接</li>
+</ol>
+<h3 id="1-2-创建Winsock应用步骤"><a href="#1-2-创建Winsock应用步骤" class="headerlink" title="1.2 创建Winsock应用步骤"></a>1.2 创建Winsock应用步骤</h3><p>创建一个最基础的Winsock应用需要以下几步</p>
+<ol>
+<li>创建一个空项目</li>
+<li>添加一个空的C++ source文件到项目中</li>
+<li>引用Microsoft Windows SDK 的Include、Lib和Src目录</li>
+<li>确保项目连接Winsock库文件：<code>#pragma comment(lib, Ws2_32.lib)</code></li>
+<li>编写Winsock应用程序。使用Winsock API需要包含两个头文件：<strong>Winsock2.h</strong>和<strong>Ws2tcpip.h</strong>。前者包含Winsock的大多数函数、结构体、定义；后者包含在WinSock 2中关于TCP/IP协议的用于检索IP地址的新函数和结构。</li>
+</ol>
+<p>通常一个Winsock应用的头部应该这样写：</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WinSock2.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WS2tcpip.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+
+<span class="token macro property">#<span class="token directive keyword">pragma</span> comment(lib, "Ws2_32.lib")</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<blockquote>
+<p><strong>Note</strong></p>
+<ul>
+<li>如果使用ip helper APIs，需要包含Iphlpapi.h。且WinSock2.h需要在其前面。</li>
+<li>Winsock2.h包含了Windows.h一些核心内容，所以通常不需要再包含Windows.h了</li>
+<li>如果要包含Windows.h，必须放在Winsock2.h前，并且要使用<code>#define WIN32_LEAN_AND_MEAN</code>。这是因为Windows.h中包含了Winsock.h（第一个版本），会和Winsock2.h冲突，使用该预定义会避免用Winsock.h</li>
+</ul>
+</blockquote>
+<p>所以一个升级版的头部应该这样写：</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">ifndef</span> WIN32_LEAN_AND_MEAN</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> WIN32_LEAN_AND_MEAN</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span> </span><span class="token comment" spellcheck="true">// !WIN32_LEAN_AND_MEAN</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Windows.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WinSock2.h></span>  </span><span class="token comment" spellcheck="true">// socket</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WS2tcpip.h></span>  </span><span class="token comment" spellcheck="true">// TCP/IP</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iphlpapi.h></span>  </span><span class="token comment" spellcheck="true">// ip helper APIs</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+
+<span class="token comment" spellcheck="true">// Link to Ws2_32.lib</span>
+<span class="token macro property">#<span class="token directive keyword">pragma</span> comment(lib,"Ws2_32.lib")</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="1-3-初始化Winsock"><a href="#1-3-初始化Winsock" class="headerlink" title="1.3 初始化Winsock"></a>1.3 初始化Winsock</h3><p>所有调用Winsock函数的进程(应用程序或DLL)必须在调用其他Winsock函数之前初始化Windows socket DLL再使用。这也确保了系统上支持Winsock。</p>
+<ol>
+<li>创建WSADATA对象<pre class=" language-cpp"><code class="language-cpp">WSADATA wsaData<span class="token punctuation">;</span></code></pre>
+</li>
+<li>调用WSAStartup，返回整数值，并通过该值检查错误。 <pre class=" language-cpp"><code class="language-cpp"> <span class="token comment" spellcheck="true">// Initialize WinSock</span>
+ <span class="token keyword">int</span> iRes <span class="token operator">=</span> <span class="token function">WSAStartup</span><span class="token punctuation">(</span><span class="token function">MAKEWORD</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>wasData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+         <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"WSAStartup failed: %d\n"</span> <span class="token punctuation">,</span> iRes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span> </code></pre>
+</li>
+</ol>
+<p>调用WSAStartup函数来启动WS2_32.dll的使用。</p>
+<p>WSADATA结构包含关于Windows套接字实现的信息。WSAStartup的MAKEWORD(2,2)参数在系统上请求Winsock的2.2版本，并将传递的版本设置为调用者可以使用的Windows套接字支持的最高版本。</p>
+<h2 id="2-创建server"><a href="#2-创建server" class="headerlink" title="2. 创建server"></a>2. 创建server</h2><p>参考<a href="#11_ServerClient_8">1.1</a>中的步骤，在<a href="#13_Winsock_73">1.3</a>中已经说明了如何初始化Winsock，下面应该是创建server socket</p>
+<h3 id="2-1-创建server-socket"><a href="#2-1-创建server-socket" class="headerlink" title="2.1 创建server socket"></a>2.1 创建server socket</h3><ol>
+<li> 使用<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getaddrinfo">getaddrinfo()</a>确定sockaddr结构体值，getaddrinfo中使用<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-addrinfoa">addrinfo</a>结构体。</li>
+</ol>
+<p>使用的信息包含以下内容：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AF_INET</td>
+<td>指定IPv4地址族</td>
+</tr>
+<tr>
+<td>SOCK_STREAM</td>
+<td>指定一个流套接字</td>
+</tr>
+<tr>
+<td>IPPROTO_TCP</td>
+<td>指定TCP协议</td>
+</tr>
+<tr>
+<td>AI_PASSIVE</td>
+<td>AI_PASSIVE标志表示调用者打算在调用bind函数时使用返回的套接字地址结构。当AI_PASSIVE标志被设置并且getaddrinfo函数的nodename参数是一个空指针时，套接字地址结构的IP地址部分被设置为IPv4地址INADDR_ANY或IPv6地址IN6ADDR_ANY_INIT。</td>
+</tr>
+</tbody></table>
+<p>代码如下：</p>
+<pre class=" language-cpp"><code class="language-cpp">   <span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_PORT "27015"</span>
+
+<span class="token comment" spellcheck="true">// 2. create server socket</span>
+    addrinfo<span class="token operator">*</span> result <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token operator">*</span> ptr <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> hints<span class="token punctuation">;</span>
+
+    <span class="token function">ZeroMemory</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>hints<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_family <span class="token operator">=</span> AF_INET<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_socktype <span class="token operator">=</span> SOCK_STREAM<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_protocol <span class="token operator">=</span> IPPROTO_TCP<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_flags <span class="token operator">=</span> AI_PASSIVE<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Resolve the local address and port to be used by the server</span>
+    iRes <span class="token operator">=</span> <span class="token function">getaddrinfo</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> DEFAULT_PORT<span class="token punctuation">,</span> <span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token operator">&amp;</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"getaddrinfo failed:%d\n"</span><span class="token punctuation">,</span>iRes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+<div id="refer-anchor-212"></div>
+
+<ol start="2">
+<li>创建SOCKET对象ListenSocket ，用来监听客户端连接请求。</li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp">SOCKET ListenSocket <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span></code></pre>
+<div id="refer-anchor-213"></div>
+
+<ol start="3">
+<li>调用socket函数，返回值赋给ListenSocket 。</li>
+</ol>
+<p>对于server，使用getaddrinfo返回的第一个IP地址，该IP地址与在提示参数中指定的地址家族、套接字类型和协议相匹配</p>
+<p>如果想监听IPv6，ai_family = AF_INET6；</p>
+<p>如果想同时监听IPv4和IPv6，必须创建两个监听套接字，一个监听IPv6，一个监听IPv4。应用程序必须分别处理这两个套接字。</p>
+<pre class=" language-cpp"><code class="language-cpp">ListenSocket <span class="token operator">=</span> <span class="token function">socket</span><span class="token punctuation">(</span>result<span class="token operator">-</span><span class="token operator">></span>ai_family<span class="token punctuation">,</span> result<span class="token operator">-</span><span class="token operator">></span>ai_socktype<span class="token punctuation">,</span> result<span class="token operator">-</span><span class="token operator">></span>ai_protocol<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<div id="refer-anchor-214"></div>
+
+<ol start="4">
+<li>检查错误，确保socket是一个有效的套接字</li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp">    <span class="token comment" spellcheck="true">// Check for errors to ensure that the socket is valid socket</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ListenSocket <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Error at socket():"</span><span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+<h3 id="2-2-绑定socket"><a href="#2-2-绑定socket" class="headerlink" title="2.2 绑定socket"></a>2.2 绑定socket</h3><p>server如果要接收client连接请求，需要绑定一个网络地址。下面阐述如果绑定一个创建了IP地址和端口的socket。client使用IP地址和端口连接主机。</p>
+<ol>
+<li>bind并检查错误</li>
+</ol>
+<p>sockaddr结构保存有关地址家族、IP地址和端口号的信息。</p>
+<p>调用<code>bind()</code>，传递创建的socket和getaddrinfo函数返回的sockaddr结构作为参数。检查一般性错误。</p>
+<pre class=" language-cpp"><code class="language-cpp">    <span class="token comment" spellcheck="true">// 3. Bind socket</span>
+    <span class="token comment" spellcheck="true">// Setup the TCP listening socket</span>
+    iRes <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">,</span> result<span class="token operator">-</span><span class="token operator">></span>ai_addr<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>result<span class="token operator">-</span><span class="token operator">></span>ai_addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"bind failed with error: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+<ol start="2">
+<li>释放存放地址信息的内存空间</li>
+</ol>
+<p>一旦绑定完成，getaddrinfo获取的地址信息就不在需要了，使用freeaddrinfo释放分配的内存。</p>
+<pre class=" language-cpp"><code class="language-cpp">    <span class="token comment" spellcheck="true">// free memory allocated by getaddrinfo() for address information</span>
+    <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="2-3-监听"><a href="#2-3-监听" class="headerlink" title="2.3 监听"></a>2.3 监听</h3><p>socket绑定IP地址和端口后，需要监听该IP和端口发送的连接请求。</p>
+<p>调用<code>listen()</code>将创建的socket和待定的值(待定连接队列的最大长度)作为参数传递。在本例中，backlog参数被设置为SOMAXCONN。此值是一个特殊常量，指示此套接字的Winsock提供程序允许队列中挂起连接的最大合理数量。检查返回值是否有一般错误。</p>
+<h3 id="2-4-接受连接请求"><a href="#2-4-接受连接请求" class="headerlink" title="2.4 接受连接请求"></a>2.4 接受连接请求</h3><p>监听时若收到连接请求，需处理该请求。</p>
+<ol>
+<li>创建临时SOCKET对象ClientSocket接受client的连接</li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// 5. Accepting a Connetion</span>
+<span class="token comment" spellcheck="true">// Create temporary ClientSocket for accepting connetions from clients</span>
+SOCKET ClientSocket <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span></code></pre>
+<ol start="2">
+<li>通常server要监听多个客户端的连接请求。对一个高性能的server来说，需要使用多线程处理多客户端请求。</li>
+</ol>
+<p>Winsock有多种处理多客户端连接请求的技术。一种编程技术是创建一个连续循环，使用<code>listen()</code>检查连接请求(参见<a href="#23__195">2.3</a>)。如果出现连接请求，应用程序将调用<code>accept、AcceptEx或WSAAccept</code>函数，并将工作传递给另一个线程来处理请求。还可以使用其他几种编程技术。</p>
+<blockquote>
+<p><strong>Note</strong><br>这个基本示例非常简单，并且不使用多线程。该示例还只侦听和接受单个连接。</p>
+</blockquote>
+<pre class=" language-cpp"><code class="language-cpp">    <span class="token comment" spellcheck="true">// Accept a client socket</span>
+    ClientSocket <span class="token operator">=</span> <span class="token function">accept</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ClientSocket <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"accept failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
+<h3 id="2-5-接收好发送数据"><a href="#2-5-接收好发送数据" class="headerlink" title="2.5 接收好发送数据"></a>2.5 接收好发送数据</h3><p>使用<code>recv()</code>和<code>send()</code>接收和发送消息</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_BUFLEN 512</span>
+
+    <span class="token comment" spellcheck="true">// 6. Receiving and Sending Data on the Server</span>
+    <span class="token keyword">char</span> recvbuf<span class="token punctuation">[</span>DEFAULT_BUFLEN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> iSendRes<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> recvbuflen <span class="token operator">=</span> DEFAULT_BUFLEN<span class="token punctuation">;</span>
+
+    iRes <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Receive until the peer shuts down the connection</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>iRes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        iRes <span class="token operator">=</span> <span class="token function">recv</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">,</span> recvbuf<span class="token punctuation">,</span> recvbuflen<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Bytes received: "</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// Echo the buffr back to the sender</span>
+            iSendRes <span class="token operator">=</span> <span class="token function">send</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">,</span> recvbuf<span class="token punctuation">,</span> iRes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>iSendRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                cout <span class="token operator">&lt;&lt;</span> <span class="token string">"send failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+                <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Bytes sent: "</span> <span class="token operator">&lt;&lt;</span> iSendRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span><span class="token string">"recv failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span></code></pre>
+<h3 id="2-6-断开连接"><a href="#2-6-断开连接" class="headerlink" title="2.6 断开连接"></a>2.6 断开连接</h3><ol>
+<li><p>当server完成向client发送数据时，可以调用<code>shutdown()</code>，指定<code>SD_SEND</code>来关闭套接字的发送端。这允许客户端释放此套接字的一些资源。服务器应用程序仍然可以接收套接字上的数据。</p>
+<pre class=" language-cpp"><code class="language-cpp"> <span class="token comment" spellcheck="true">// 7.Disconneting the Server</span>
+ <span class="token comment" spellcheck="true">// shutdown the send half of the connetiong since no more data will be sent</span>
+ iRes <span class="token operator">=</span> <span class="token function">shutdown</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">,</span> SD_SEND<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+ <span class="token punctuation">{</span>
+     cout <span class="token operator">&lt;&lt;</span> <span class="token string">"shutdown failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+     <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+ <span class="token punctuation">}</span></code></pre>
+</li>
+<li><p>当客户端应用程序完成接收数据时，将调用<code>closesocket()</code>来关闭套接字。</p>
+</li>
+</ol>
+<p>当客户端应用程序使用Windows套接字DLL完成时，WSACleanup函数被调用来释放资源。</p>
+<pre class=" language-cpp"><code class="language-cpp">    <span class="token comment" spellcheck="true">// cleanup</span>
+    <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></code></pre>
+<h2 id="3-创建client"><a href="#3-创建client" class="headerlink" title="3. 创建client"></a>3. 创建client</h2><p>与第2节大体相似。</p>
+<h3 id="3-1-创建client-socket"><a href="#3-1-创建client-socket" class="headerlink" title="3.1 创建client socket"></a>3.1 创建client socket</h3><ol>
+<li>对于这个应用程序，Internet地址族是未指定的<code>AF_UNSPEC</code>，因此可以返回IPv6或IPv4地址。其余与<a href="#21_server_socket_99">2.1</a>的1基本相同</li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">struct</span> addrinfo <span class="token operator">*</span>result <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">,</span>
+                <span class="token operator">*</span>ptr <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">,</span>
+                hints<span class="token punctuation">;</span>
+
+<span class="token function">ZeroMemory</span><span class="token punctuation">(</span> <span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>hints<span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+hints<span class="token punctuation">.</span>ai_family <span class="token operator">=</span> AF_UNSPEC<span class="token punctuation">;</span>
+hints<span class="token punctuation">.</span>ai_socktype <span class="token operator">=</span> SOCK_STREAM<span class="token punctuation">;</span>
+hints<span class="token punctuation">.</span>ai_protocol <span class="token operator">=</span> IPPROTO_TCP<span class="token punctuation">;</span></code></pre>
+<ol start="2">
+<li>与<a href="#21_server_socket_99">2.1</a>的1不同的是，请求在命令行中传递的服务器名称的IP地址。</li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_PORT "27015"</span>
+
+<span class="token comment" spellcheck="true">// Resolve the server address and port</span>
+iResult <span class="token operator">=</span> <span class="token function">getaddrinfo</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> DEFAULT_PORT<span class="token punctuation">,</span> <span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token operator">&amp;</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>iResult <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"getaddrinfo failed: %d\n"</span><span class="token punctuation">,</span> iResult<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ol start="3">
+<li>同<a href="#21_server_socket_99">2.1</a>的<a href="#refer-anchor-212">2</a></li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp">SOCKET ConnectSocket <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span></code></pre>
+<ol start="4">
+<li>同<a href="#21_server_socket_99">2.1</a>的<a href="#refer-anchor-213">3</a></li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// Attempt to connect to the first address returned by</span>
+<span class="token comment" spellcheck="true">// the call to getaddrinfo</span>
+ptr<span class="token operator">=</span>result<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// Create a SOCKET for connecting to server</span>
+ConnectSocket <span class="token operator">=</span> <span class="token function">socket</span><span class="token punctuation">(</span>ptr<span class="token operator">-</span><span class="token operator">></span>ai_family<span class="token punctuation">,</span> ptr<span class="token operator">-</span><span class="token operator">></span>ai_socktype<span class="token punctuation">,</span> 
+    ptr<span class="token operator">-</span><span class="token operator">></span>ai_protocol<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<ol start="5">
+<li>同<a href="#21_server_socket_99">2.1</a>的<a href="#refer-anchor-214">4</a></li>
+</ol>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token keyword">if</span> <span class="token punctuation">(</span>ConnectSocket <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Error at socket(): %ld\n"</span><span class="token punctuation">,</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="3-2-连接server"><a href="#3-2-连接server" class="headerlink" title="3.2 连接server"></a>3.2 连接server</h3><p>客户端想要通信，需要连接server。</p>
+<p>调用<code>connect()</code>，设置参数为创建的socket和sockaddr结构，并检查错误。</p>
+<pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// Connect to server.</span>
+iResult <span class="token operator">=</span> <span class="token function">connect</span><span class="token punctuation">(</span> ConnectSocket<span class="token punctuation">,</span> ptr<span class="token operator">-</span><span class="token operator">></span>ai_addr<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>ptr<span class="token operator">-</span><span class="token operator">></span>ai_addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>iResult <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">closesocket</span><span class="token punctuation">(</span>ConnectSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ConnectSocket <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// Should really try the next address returned by getaddrinfo</span>
+<span class="token comment" spellcheck="true">// if the connect call failed</span>
+<span class="token comment" spellcheck="true">// But for this simple example we just free the resources</span>
+<span class="token comment" spellcheck="true">// returned by getaddrinfo and print an error message</span>
+
+<span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span>ConnectSocket <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Unable to connect to server!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>在本例中，<code>getaddrinfo()</code>返回的第一个IP地址用于指定传递给连接的<code>sockaddr</code>结构。如果对第一个IP地址的连接调用失败，那么尝试从<code>getaddrinfo()</code>返回的链表中的下一个<code>addrinfo</code>结构。</p>
+<p>sockaddr结构中指定的信息包括:</p>
+<ul>
+<li>客户机将尝试连接到的服务器的IP地址。</li>
+<li>客户机将连接到的服务器端口号。当</li>
+<li>客户端调用<code>getaddrinfo()</code>时，该端口被指定为端口27015。</li>
+</ul>
+<h3 id="3-3-发送接收数据"><a href="#3-3-发送接收数据" class="headerlink" title="3.3 发送接收数据"></a>3.3 发送接收数据</h3><pre class=" language-cpp#define"><code class="language-cpp#define">int recvbuflen = DEFAULT_BUFLEN;
+
+const char *sendbuf = "this is a test";
+char recvbuf[DEFAULT_BUFLEN];
+
+int iResult;
+
+// Send an initial buffer
+iResult = send(ConnectSocket, sendbuf, (int) strlen(sendbuf), 0);
+if (iResult == SOCKET_ERROR) {
+    printf("send failed: %d\n", WSAGetLastError());
+    closesocket(ConnectSocket);
+    WSACleanup();
+    return 1;
+}
+
+printf("Bytes Sent: %ld\n", iResult);
+
+// shutdown the connection for sending since no more data will be sent
+// the client can still use the ConnectSocket for receiving data
+iResult = shutdown(ConnectSocket, SD_SEND);
+if (iResult == SOCKET_ERROR) {
+    printf("shutdown failed: %d\n", WSAGetLastError());
+    closesocket(ConnectSocket);
+    WSACleanup();
+    return 1;
+}
+
+// Receive data until the server closes the connection
+do {
+    iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+    if (iResult > 0)
+        printf("Bytes received: %d\n", iResult);
+    else if (iResult == 0)
+        printf("Connection closed\n");
+    else
+        printf("recv failed: %d\n", WSAGetLastError());
+} while (iResult > 0);</code></pre>
+<h3 id="3-4-断开连接"><a href="#3-4-断开连接" class="headerlink" title="3.4 断开连接"></a>3.4 断开连接</h3><p>同<a href="#26__280">2.6</a></p>
+<h2 id="4-完整应用代码"><a href="#4-完整应用代码" class="headerlink" title="4. 完整应用代码"></a>4. 完整应用代码</h2><h3 id="4-1-Server"><a href="#4-1-Server" class="headerlink" title="4.1 Server"></a>4.1 Server</h3><pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// FileName: server.cpp</span>
+<span class="token comment" spellcheck="true">// Description: Create server socket application</span>
+<span class="token comment" spellcheck="true">// Author: Jiejing.Ma</span>
+<span class="token comment" spellcheck="true">// Update: 2020/12/11</span>
+
+<span class="token macro property">#<span class="token directive keyword">undef</span> UNICODE</span>
+
+<span class="token macro property">#<span class="token directive keyword">ifndef</span> WIN32_LEAN_AND_MEAN</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> WIN32_LEAN_AND_MEAN</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span> </span><span class="token comment" spellcheck="true">// !WIN32_LEAN_AND_MEAN</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Windows.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WinSock2.h></span>  </span><span class="token comment" spellcheck="true">// socket</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WS2tcpip.h></span>  </span><span class="token comment" spellcheck="true">// TCP/IP</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iphlpapi.h></span>  </span><span class="token comment" spellcheck="true">// ip helper APIs</span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
+
+<span class="token comment" spellcheck="true">// Link to Ws2_32.lib</span>
+<span class="token macro property">#<span class="token directive keyword">pragma</span> comment(lib,"Ws2_32.lib")</span>
+
+<span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_BUFLEN 512</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_PORT "27015"</span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    WSADATA wasData<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> iRes<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Create a SOCKET object to listen for client connections</span>
+    SOCKET ListenSocket <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Create temporary ClientSocket for accepting connetions from clients</span>
+    SOCKET ClientSocket <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span>
+
+    addrinfo<span class="token operator">*</span> result <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    addrinfo hints<span class="token punctuation">;</span>
+
+    <span class="token keyword">char</span> recvbuf<span class="token punctuation">[</span>DEFAULT_BUFLEN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> iSendRes<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> recvbuflen <span class="token operator">=</span> DEFAULT_BUFLEN<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 1. Initialize WinSock</span>
+    iRes <span class="token operator">=</span> <span class="token function">WSAStartup</span><span class="token punctuation">(</span><span class="token function">MAKEWORD</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>wasData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"WSAStartup failed: "</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 2. Create server socket</span>
+    <span class="token function">ZeroMemory</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>hints<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_family <span class="token operator">=</span> AF_INET<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_socktype <span class="token operator">=</span> SOCK_STREAM<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_protocol <span class="token operator">=</span> IPPROTO_TCP<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_flags <span class="token operator">=</span> AI_PASSIVE<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Resolve the local address and port to be used by the server</span>
+    iRes <span class="token operator">=</span> <span class="token function">getaddrinfo</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> DEFAULT_PORT<span class="token punctuation">,</span> <span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token operator">&amp;</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"getaddrinfo failed: "</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// Create a SOCKET for connecting to server</span>
+    ListenSocket <span class="token operator">=</span> <span class="token function">socket</span><span class="token punctuation">(</span>result<span class="token operator">-</span><span class="token operator">></span>ai_family<span class="token punctuation">,</span> result<span class="token operator">-</span><span class="token operator">></span>ai_socktype<span class="token punctuation">,</span> result<span class="token operator">-</span><span class="token operator">></span>ai_protocol<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Check for errors to ensure that the socket is valid socket</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ListenSocket <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Error at socket():"</span><span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 3. Bind socket</span>
+    <span class="token comment" spellcheck="true">// Setup the TCP listening socket</span>
+    iRes <span class="token operator">=</span> <span class="token function">bind</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">,</span> result<span class="token operator">-</span><span class="token operator">></span>ai_addr<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>result<span class="token operator">-</span><span class="token operator">></span>ai_addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"bind failed with error: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// free memory allocated by getaddrinfo() for address information</span>
+    <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 4. Listening on a Socket</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">listen</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">,</span> SOMAXCONN<span class="token punctuation">)</span> <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Listen failed with error: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 5. Accepting a Connetion</span>
+    <span class="token comment" spellcheck="true">// Accept a client socket</span>
+    ClientSocket <span class="token operator">=</span> <span class="token function">accept</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ClientSocket <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"accept failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// No longer need server socket</span>
+    <span class="token function">closesocket</span><span class="token punctuation">(</span>ListenSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 6. Receiving and Sending Data on the Server</span>
+    iRes <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// Receive until the peer shuts down the connection</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>iRes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        iRes <span class="token operator">=</span> <span class="token function">recv</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">,</span> recvbuf<span class="token punctuation">,</span> recvbuflen<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Bytes received: "</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">// Echo the buffr back to the sender</span>
+            iSendRes <span class="token operator">=</span> <span class="token function">send</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">,</span> recvbuf<span class="token punctuation">,</span> iRes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>iSendRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                cout <span class="token operator">&lt;&lt;</span> <span class="token string">"send failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+                <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Bytes sent: "</span> <span class="token operator">&lt;&lt;</span> iSendRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span><span class="token string">"recv failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 7.Disconneting the Server</span>
+    <span class="token comment" spellcheck="true">// shutdown the send half of the connetiong since no more data will be sent</span>
+    iRes <span class="token operator">=</span> <span class="token function">shutdown</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">,</span> SD_SEND<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"shutdown failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// cleanup</span>
+    <span class="token function">closesocket</span><span class="token punctuation">(</span>ClientSocket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="4-2-Client"><a href="#4-2-Client" class="headerlink" title="4.2 Client"></a>4.2 Client</h3><pre class=" language-cpp"><code class="language-cpp"><span class="token comment" spellcheck="true">// FileName: client.cpp</span>
+<span class="token comment" spellcheck="true">// Description: Create client socket application</span>
+<span class="token comment" spellcheck="true">// Author: Jiejing.Ma</span>
+<span class="token comment" spellcheck="true">// Update: 2020/12/11</span>
+
+<span class="token macro property">#<span class="token directive keyword">undef</span> UNICODE</span>
+
+<span class="token macro property">#<span class="token directive keyword">ifndef</span> WIN32_LEAN_AND_MEAN</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> WIN32_LEAN_AND_MEAN</span>
+<span class="token macro property">#<span class="token directive keyword">endif</span> </span><span class="token comment" spellcheck="true">// !WIN32_LEAN_AND_MEAN</span>
+
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;Windows.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WinSock2.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;WS2tcpip.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iphlpapi.h></span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span>
+
+<span class="token comment" spellcheck="true">// Need to link with Ws2_32.li, Mswsock.lib, Advapi32.lib</span>
+<span class="token macro property">#<span class="token directive keyword">pragma</span> comment(lib,"Ws2_32.lib")</span>
+<span class="token macro property">#<span class="token directive keyword">pragma</span> comment(lib,"Mswsock.lib")</span>
+<span class="token macro property">#<span class="token directive keyword">pragma</span> comment(lib,"Advapi32.lib")</span>
+
+<span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_BUFLEN 512</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> DEFAULT_PORT "27015"</span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span> argv<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    WSADATA wsaData<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> iRes<span class="token punctuation">;</span>
+
+    SOCKET ConnectSocket  <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span>
+
+    addrinfo hints<span class="token punctuation">;</span>
+    addrinfo<span class="token operator">*</span> result <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token operator">*</span>ptr<span class="token operator">=</span><span class="token constant">NULL</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>sendbuf<span class="token operator">=</span><span class="token string">"hello"</span><span class="token punctuation">;</span>
+    <span class="token keyword">char</span> recvbuf<span class="token punctuation">[</span>DEFAULT_BUFLEN<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> recvbuflen <span class="token operator">=</span> DEFAULT_BUFLEN<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 1. Initialize WinSock</span>
+    iRes <span class="token operator">=</span> <span class="token function">WSAStartup</span><span class="token punctuation">(</span><span class="token function">MAKEWORD</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>wsaData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"WSAStartup failed: "</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 2. Create socket</span>
+    <span class="token function">ZeroMemory</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>hints<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_family <span class="token operator">=</span> AF_UNSPEC<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_protocol <span class="token operator">=</span> IPPROTO_TCP<span class="token punctuation">;</span>
+    hints<span class="token punctuation">.</span>ai_socktype <span class="token operator">=</span> SOCK_STREAM<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// Resolve the server address and port</span>
+    iRes <span class="token operator">=</span> <span class="token function">getaddrinfo</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> DEFAULT_PORT<span class="token punctuation">,</span> <span class="token operator">&amp;</span>hints<span class="token punctuation">,</span> <span class="token operator">&amp;</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"getaddrinfo failed:"</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// Attempt to connect to an address until one succeeds</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>ptr <span class="token operator">=</span> result<span class="token punctuation">;</span> ptr <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span> ptr <span class="token operator">=</span> ptr<span class="token operator">-</span><span class="token operator">></span>ai_next<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// Create a SOCKET for connecting to server    </span>
+        ConnectSocket  <span class="token operator">=</span> <span class="token function">socket</span><span class="token punctuation">(</span>ptr<span class="token operator">-</span><span class="token operator">></span>ai_family<span class="token punctuation">,</span> ptr<span class="token operator">-</span><span class="token operator">></span>ai_socktype<span class="token punctuation">,</span> ptr<span class="token operator">-</span><span class="token operator">></span>ai_protocol<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>ConnectSocket  <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Error at socket():"</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+            <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true">// 3.Connect to Server</span>
+        iRes <span class="token operator">=</span> <span class="token function">connect</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">,</span> ptr<span class="token operator">-</span><span class="token operator">></span>ai_addr<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>ptr<span class="token operator">-</span><span class="token operator">></span>ai_addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">closesocket</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ConnectSocket  <span class="token operator">=</span> INVALID_SOCKET<span class="token punctuation">;</span>
+            <span class="token keyword">continue</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">freeaddrinfo</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ConnectSocket  <span class="token operator">==</span> INVALID_SOCKET<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Unable to connect to server!"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 4. Send and Receive data</span>
+    <span class="token comment" spellcheck="true">// Send an initial buffer</span>
+    iRes <span class="token operator">=</span> <span class="token function">send</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">,</span> sendbuf<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token function">strlen</span><span class="token punctuation">(</span>sendbuf<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"send faild: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Bytes sent: "</span> <span class="token operator">&lt;&lt;</span> iRes <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// shutdown the connection for sending since no more data will be sent</span>
+    <span class="token comment" spellcheck="true">// the client can still use the ConnectSocket for receiving data</span>
+    iRes <span class="token operator">=</span> <span class="token function">shutdown</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">,</span> SD_SEND<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> SOCKET_ERROR<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        cout <span class="token operator">&lt;&lt;</span> <span class="token string">"shutdown failed: "</span> <span class="token operator">&lt;&lt;</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+        <span class="token function">closesocket</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    iRes <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>iRes<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        iRes <span class="token operator">=</span> <span class="token function">recv</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">,</span> recvbuf<span class="token punctuation">,</span> recvbuflen<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Bytes received: %d\n"</span><span class="token punctuation">,</span> iRes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>iRes <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Connection closed\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"recv failed: %d\n"</span><span class="token punctuation">,</span> <span class="token function">WSAGetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 5. Disconnect</span>
+    <span class="token comment" spellcheck="true">// cleanup</span>
+    <span class="token function">closesocket</span><span class="token punctuation">(</span>ConnectSocket <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">WSACleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">马捷径</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://molianwh.github.io/2020/12/14/communication/winsock-chuang-jian-socket-server-he-client/">https://molianwh.github.io/2020/12/14/communication/winsock-chuang-jian-socket-server-he-client/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">马捷径</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/socket/">
+                                    <span class="chip bg-color">socket</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .mvaline-card {
+        margin: 1.5rem auto;
+    }
+
+    .mvaline-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+</style>
+
+<div class="card mvaline-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="mvcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/minivaline/MiniValine.js"></script>
+<script>
+    new MiniValine({
+        el: '#mvcomments',
+        appId: 'dzU7zwsMYsPKoAzUSarLChqc-MdYXbMMI',
+        appKey: 'qLAu11XLaQIGxcBufveYsM5y',
+        mode: 'DesertsP',
+        placeholder: 'Write a Comment',
+        pathname: window.location.pathname,
+        lang: '',
+        adminEmailMd5: 'de8a7aa53d07e6b6bceb45c64027763d',
+        tagMeta: ["管理员", "小伙伴", "访客"],
+        master: ["de8a7aa53d07e6b6bceb45c64027763d"],
+        friends: ["b5bd5d836c7a0091aa8473e79ed4c25e", "adb7d1cd192658a55c0ad22a3309cecf", "3ce1e6c77b4910f1871106cb30dc62b0", "cfce8dc43725cc14ffcd9fb4892d5bfc"],
+        math: true,
+        md: true,
+        enableQQ: false,
+        NoRecordIP: false,
+        visitor: true,
+        maxNest: 6,
+        pageSize: 6,
+        serverURLs: '',
+        emoticonUrl: ["https://cdn.jsdelivr.net/npm/alus@latest", "https://cdn.jsdelivr.net/gh/MiniValine/qq@latest", "https://cdn.jsdelivr.net/gh/MiniValine/Bilibilis@latest", "https://cdn.jsdelivr.net/gh/MiniValine/tieba@latest", "https://cdn.jsdelivr.net/gh/MiniValine/twemoji@latest", "https://cdn.jsdelivr.net/gh/MiniValine/weibo@latest"],
+    });
+</script>
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/12/14/communication/winsock-chuang-jian-socket-server-he-client/">
+                    <div class="card-image">
+                        
+                        <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=105906878,390165426&fm=26&gp=0.jpg" class="responsive-img" alt="Winsock创建socket server和client">
+                        
+                        <span class="card-title">Winsock创建socket server和client</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            深度理解在Win10上利用Winsock创建socket的服务端和客户端。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Communication/" class="post-category">
+                                    Communication
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/socket/">
+                        <span class="chip bg-color">socket</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/11/30/communication/zai-c-yu-python-jian-chuan-shi-pin-zheng/">
+                    <div class="card-image">
+                        
+                        <img src="https://img-blog.csdnimg.cn/20201130204440444.png" class="responsive-img" alt="在C++与python间传视频帧">
+                        
+                        <span class="card-title">在C++与python间传视频帧</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本案例旨在实现跨语言（C++和python间）视频的实时通信。这一工作内容在实际工程中很常见。由于python语言支持很多第三方库，对于开发深度学习项目很方便，验真算法速度快，很多开源算法也大多基于python实现。这时可能就会出现C++的代码借助python语言做一些图像处理（包括目标检测、姿态估计、目标跟踪等任务）的需求。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Communication/" class="post-category">
+                                    Communication
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/">
+                        <span class="chip bg-color">共享内存</span>
+                    </a>
+                    
+                    <a href="/tags/socket/">
+                        <span class="chip bg-color">socket</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 马捷径<br />'
+            + '文章作者: Jiejing.Ma<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('3'),
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="610336221"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2020</span>
+            
+            <span id="year">2020</span>
+            <a href="/about" target="_blank">Jiejing.Ma</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/MolianWH" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:jiejing_ma@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+    <a href="https://twitter.com/jiejing_ma" class="tooltipped" target="_blank" data-tooltip="关注我的Twitter: https://twitter.com/jiejing_ma" data-position="top" data-delay="50">
+        <i class="fab fa-twitter"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1135318146" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1135318146" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

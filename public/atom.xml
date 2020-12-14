@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>马捷径</title>
+  
+  <subtitle>马捷径</subtitle>
+  <link href="https://molianwh.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://molianwh.github.io/"/>
+  <updated>2020-12-14T12:37:40.807Z</updated>
+  <id>https://molianwh.github.io/</id>
+  
+  <author>
+    <name>Jiejing.Ma</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Winsock创建socket server和client</title>
+    <link href="https://molianwh.github.io/2020/12/14/communication/winsock-chuang-jian-socket-server-he-client/"/>
+    <id>https://molianwh.github.io/2020/12/14/communication/winsock-chuang-jian-socket-server-he-client/</id>
+    <published>2020-12-14T12:37:14.000Z</published>
+    <updated>2020-12-14T12:37:40.807Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;本文详细介绍在Windows 10下利用Winsock创建socket server和client应用步骤和源码。项目源码可以到我的&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="Communication" scheme="https://molianwh.github.io/categories/Communication/"/>
+    
+    
+    <category term="socket" scheme="https://molianwh.github.io/tags/socket/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在C++与python间传视频帧</title>
+    <link href="https://molianwh.github.io/2020/11/30/communication/zai-c-yu-python-jian-chuan-shi-pin-zheng/"/>
+    <id>https://molianwh.github.io/2020/11/30/communication/zai-c-yu-python-jian-chuan-shi-pin-zheng/</id>
+    <published>2020-11-30T13:37:33.000Z</published>
+    <updated>2020-11-30T13:55:43.644Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="Communication" scheme="https://molianwh.github.io/categories/Communication/"/>
+    
+    
+    <category term="共享内存" scheme="https://molianwh.github.io/tags/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/"/>
+    
+    <category term="socket" scheme="https://molianwh.github.io/tags/socket/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>目标检测中的评价指标</title>
+    <link href="https://molianwh.github.io/2020/07/15/cv/mu-biao-jian-ce-zhong-de-ping-jie-han-shu/"/>
+    <id>https://molianwh.github.io/2020/07/15/cv/mu-biao-jian-ce-zhong-de-ping-jie-han-shu/</id>
+    <published>2020-07-15T07:56:33.000Z</published>
+    <updated>2020-12-14T12:32:55.118Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;1-问题定义&quot;&gt;&lt;a href=&quot;#1-问题定义&quot; class=&quot;headerlink&quot; title=&quot;1. 问题定义&quot;&gt;&lt;/a&gt;1. 问题定义&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;目标：&lt;/strong&gt;</summary>
+        
+      
+    
+    
+    
+    <category term="CV" scheme="https://molianwh.github.io/categories/CV/"/>
+    
+    
+    <category term="CV" scheme="https://molianwh.github.io/tags/CV/"/>
+    
+    <category term="目标检测" scheme="https://molianwh.github.io/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DeepStream5.0结合OpenCV4实现视频的分析和截图</title>
+    <link href="https://molianwh.github.io/2020/05/15/deepstream/deepstream5.0-jie-he-opencv4-shi-xian-shi-pin-de-fen-xi-he-jie-tu/"/>
+    <id>https://molianwh.github.io/2020/05/15/deepstream/deepstream5.0-jie-he-opencv4-shi-xian-shi-pin-de-fen-xi-he-jie-tu/</id>
+    <published>2020-05-15T08:58:14.000Z</published>
+    <updated>2020-12-14T12:33:04.604Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;0-前言&quot;&gt;&lt;a href=&quot;#0-前言&quot; class=&quot;headerlink&quot; title=&quot;0. 前言&quot;&gt;&lt;/a&gt;0. 前言&lt;/h1&gt;&lt;p&gt;上次测试opencv结合deepstream4进行截图时，出现了一个&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="视频分析" scheme="https://molianwh.github.io/categories/%E8%A7%86%E9%A2%91%E5%88%86%E6%9E%90/"/>
+    
+    
+    <category term="视频分析" scheme="https://molianwh.github.io/tags/%E8%A7%86%E9%A2%91%E5%88%86%E6%9E%90/"/>
+    
+    <category term="DeepStream" scheme="https://molianwh.github.io/tags/DeepStream/"/>
+    
+  </entry>
+  
+</feed>
